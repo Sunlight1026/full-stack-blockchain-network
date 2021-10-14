@@ -1,0 +1,77 @@
+<h1>
+    My Wallet :   For test network
+</h1>
+    
+<h2>
+    Real-time Dashboard :
+</h2>
+
+<h3>
+  Please check your address before you send the amount.
+</h3>
+
+<h3>
+  Note: If you open two wallets at the same time, the app will use the latest wallet you have used. 
+</h3>
+
+<button mat-stroked-button color="primary" (click)="logout()">Log out</button>
+
+  <mat-tab-group class="center" mat-align-tabs="center" dynamicHeight >
+
+    
+    <mat-tab label="Send">
+      <div *ngIf="balance$ | async as balance">
+        <wallet-send
+          [balance]="balance"
+          (send)="onSend($event)">
+        </wallet-send>
+      </div>
+    </mat-tab>
+    
+    <mat-tab label="Receive">
+      <div *ngIf="balance$ | async as balance">
+        <wallet-receive
+          [balance]="balance"
+          [address]="address">
+        </wallet-receive>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Your Private Key">
+        <wallet-key [privateKey]="privateKey">
+    
+        </wallet-key>
+    </mat-tab>
+
+
+  </mat-tab-group>
+
+  <mat-divider></mat-divider>
+
+  <mat-card
+    class="wallet-validate-card center"
+    *ngIf="transactions$ | async as transactions">
+
+
+      <wallet-mine
+        (mine)="onMine($event)"
+        (start)="onStart($event)"
+        (stop)="onStop($event)">
+      </wallet-mine>
+
+      <mat-card-title>
+          List of Transaction Pool
+      </mat-card-title>
+
+      <mat-card-content>
+
+        <mat-list>
+          <transaction-item
+            *ngFor="let transaction of transactions"
+            [transaction]="transaction">
+          </transaction-item>
+        </mat-list>
+
+      </mat-card-content>
+
+  </mat-card>
